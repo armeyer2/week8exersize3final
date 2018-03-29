@@ -2,6 +2,7 @@ package weather;
 
 import org.junit.Test;
 import java.io.File;
+import java.io.StringReader;
 import java.util.ArrayList;
 import javax.swing.plaf.nimbus.State;
 import javax.xml.bind.JAXBContext;
@@ -12,35 +13,24 @@ import static org.junit.Assert.*;
 
 public class DwmlTypeTest {
 
-    @Test
-    public void getLatLonList() {
-        DwmlType result = new DwmlType();
-        String actualResult = result.getLatLonList();
-        assertEquals("I dont know", actualResult);
-    }
 
     @Test
-    public void getVersion() {
-       /* try {
+    public void latLonListZipCode() throws Exception {
+        NdfdXMLBindingStub binding = (NdfdXMLBindingStub) new NdfdXMLLocator().getndfdXMLPort();
 
-            // create JAXB context and initializing Marshaller
-            JAXBContext jaxbContext = JAXBContext.newInstance(DwmlType.class);
+        String result = binding.latLonListZipCode("53711");
+        //assertEquals("Result did not match expected value", "???", result);
 
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        // create JAXB context and initializing Marshaller
+        JAXBContext jaxbContext = JAXBContext.newInstance(DwmlType.class);
 
-            DwmlType result = new DwmlType();
-            String actualResult = result.getLatLonList();
-
-            // this will create Java object - country from the XML file
-            DwmlType object = (DwmlType) jaxbUnmarshaller.unmarshal(actualResult);
-
-            System.out.println("Version: " + object.getVersion());
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
 
-        } catch (JAXBException e) {
-            // some exception occured
-            e.printStackTrace();
-        }*/
+                // this will create Java object - country from the XML file
+                DwmlType object = (DwmlType) jaxbUnmarshaller.unmarshal(new StringReader(result));
 
+                assertEquals("43.0798,-89.3875", object.getLatLonList());
     }
+
 }
